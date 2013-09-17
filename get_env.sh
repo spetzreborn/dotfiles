@@ -460,14 +460,18 @@ echo ""
 create_dir ${L_REPO}/get_env/unpack/
 unzip /tmp/${r_repository}_${VERSION}.zip -d ${L_REPO}/unpack/
 
+# TODO: Better smarter move?
+# Move files from unpack/
+mv ${L_REPO}/unpack/${r_repository}-${VERSION}/* ${L_REPO}/
+
 # Test if there was a change in get_env.sh - and is needed to be run again.
 # Need absolute name in from file, so it truly can make variable name.
 # This diff dose not care about svn metadatalines or comments.
-if ! diff -q -I '^# .*'  ~/$MYNAME ${L_REPO}/get_env/unpack/etc/${myabsolutename} >/dev/null 2>&1; then
+if ! diff -q -I '^# .*'  ~/$MYNAME ${L_REPO}/get_env/unpack/${myabsolutename} >/dev/null 2>&1; then
 	echo -e "" 
 	foldit echo -e '${INFO}Found newer	 $MYNAME ${END}'
 	foldit echo -en "Replacing	   $(echo ~)/${MYNAME}"
-	if cp ${L_REPO}/get_env/unpack/etc/${myabsolutename} ~/${MYNAME}; then
+	if cp ${L_REPO}/get_env/unpack/${myabsolutename} ~/${MYNAME}; then
 		ok
 		dbg "Replaced ${MYNAME} with newer succesfully."
 	else
@@ -570,6 +574,7 @@ fi
 report
 
 # Cleanup
+# TOOD: remove downloaded zipfile
 
 dbg "cat $FAILEDFILE: " $(cat $FAILEDFILE)
 
