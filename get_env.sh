@@ -27,11 +27,16 @@ depends() {
 depends wget logger tput cp rm cat ln unlink diff host mkdir grep egrep sed fold unzip
 
 
-# Variables in capital are localstuffs, the lowercase regards the remote svnserver
+# Variables in capital are localstuffs, the lowercase regards the remote server
 
 # The script name
 MYNAME=$(basename $0)
 MYBASENAME=$(echo $MYNAME | sed 's/\.sh$//')
+
+# Repository configuration
+gitserver=github.com
+gituser=spetzreborn
+r_repository=dotfiles
 
 # The absolute script name, on server, and default name.
 myabsolutename=get_env.sh
