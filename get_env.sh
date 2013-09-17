@@ -39,25 +39,27 @@ myabsolutename=get_env.sh
 # Conffile
 CONFFILE=~/${MYBASENAME}.conf
 
+# TODO TODO; uncomment arrays when .testrc is working.
+FILES2COPY[0]="etc $HOME .testrc"
 
 # TODO: Skip design goal of all in one file and source "FILES2COPY"?
 # Files to be copied to various dirs. Work like:
 # [dir_the_file_lives_in_in_repo] [dir_the_file_shuld_go_to] [files]
 
 # Files to be copied from [L_REPO/get_env/$VERSION/etc] to [homedir]
-FILES2COPY[0]="etc $HOME .bashrc .bash_logout .profile .xprofile .vimrc .screenrc .bashrc.functions .bashrc.alias .inputrc .pentadactylrc .gitconfig"
+#FILES2COPY[0]="etc $HOME .bashrc .bash_logout .profile .xprofile .vimrc .screenrc .bashrc.functions .bashrc.alias .inputrc .pentadactylrc .gitconfig"
 
 # Files to be copied from [L_REPO/get_env/$VERSION/work] to [homedir]
-FILES2COPY[1]="work $HOME connect_rdp.sh"
+#FILES2COPY[1]="work $HOME connect_rdp.sh"
 
 # Files to be copied from [L_REPO/get_env/$VERSION/scripts] to [homedir]
-FILES2COPY[2]="scripts $HOME .screen_ssh.sh radio.sh"
+#FILES2COPY[2]="scripts $HOME .screen_ssh.sh radio.sh"
 
 # Files to be copied from [L_REPO/get_env/$VERSION/etc] to [$HOME/.ssh]
-FILES2COPY[3]="etc $HOME/.ssh config known_hosts_fromrepo"
+#FILES2COPY[3]="etc $HOME/.ssh config known_hosts_fromrepo"
 
 # Files to be copied from [L_REPO/get_env/$VERSION/etc/.vim/plugin] to [$HOME/.vim/plugin]
-FILES2COPY[4]="etc/.vim/plugin $HOME/.vim/plugin detectindent.vim SearchComplete.vim gnupg.vim"
+#FILES2COPY[4]="etc/.vim/plugin $HOME/.vim/plugin detectindent.vim SearchComplete.vim gnupg.vim"
 
 # Files to be copied to some other dir
 # FILES2COPY[ ]=""
