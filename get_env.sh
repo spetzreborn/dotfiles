@@ -355,7 +355,6 @@ if [ -n $DEBUG ];then
 fi
 
 # TODO: Fix gitvariables for verbose
-exit 0
 dbg "I have started, read variables and functions and are on line:$LINENO"
 dbg "Variables I have: "
 dbg "\$MYNAME: $MYNAME"
@@ -372,6 +371,8 @@ done
 dbg "\$tb: $tb"
 dbg "\$DEBUG:$DEBUG"
 dbg "\$DEBUGLOG: $DEBUGLOG"
+
+exit 0
 
 # Check for internet connection
 dbg "Checking for internet connection . . ."
