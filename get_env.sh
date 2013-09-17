@@ -36,7 +36,7 @@ MYBASENAME=$(echo $MYNAME | sed 's/\.sh$//')
 # Repository configuration
 gitserver=github.com
 gituser=spetzreborn
-r_repository=dotfiles
+r_repositories=dotfiles
 
 # The absolute script name, on server, and default name.
 myabsolutename=get_env.sh
@@ -368,7 +368,6 @@ for array in "${FILES2COPY[@]}";do
 	dbg "\$FILE2COPY[$i]: $array"
 	((i++))
 done
-dbg "\$tb: $tb"
 dbg "\$DEBUG:$DEBUG"
 dbg "\$DEBUGLOG: $DEBUGLOG"
 
