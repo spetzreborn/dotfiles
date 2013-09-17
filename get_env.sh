@@ -36,7 +36,7 @@ MYBASENAME=$(echo $MYNAME | sed 's/\.sh$//')
 # Repository configuration
 gitserver=github.com
 gituser=spetzreborn
-r_repositories=dotfiles
+r_repository=dotfiles
 
 # The absolute script name, on server, and default name.
 myabsolutename=get_env.sh
@@ -360,7 +360,7 @@ dbg "Variables I have: "
 dbg "\$MYNAME: $MYNAME"
 dbg "\$gituser: $gituser"
 dbg "\$gitserver: $gitserver"
-dbg "\$r_repositories: $r_repositories"
+dbg "\$r_repository: $r_repository"
 dbg "\$L_REPO: $L_REPO"
 # Call dbg() for all values in array $FILES2COPY
 i=0
@@ -370,8 +370,6 @@ for array in "${FILES2COPY[@]}";do
 done
 dbg "\$DEBUG:$DEBUG"
 dbg "\$DEBUGLOG: $DEBUGLOG"
-
-exit 0
 
 # Check for internet connection
 dbg "Checking for internet connection . . ."
