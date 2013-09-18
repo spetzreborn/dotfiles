@@ -39,7 +39,7 @@ myabsolutename=get_env.sh
 CONFFILE=~/${MYBASENAME}.conf
 
 # TODO TODO; uncomment arrays when .testrc is working.
-FILES2COPY[0]="etc $HOME .testrc"
+FILES2COPY[0]="HOME $HOME .testrc"
 
 # TODO: Skip design goal of all in one file and source "FILES2COPY"?
 # Files to be copied to various dirs. Work like:
@@ -456,7 +456,6 @@ fi
 
 # Unzip
 create_dir ${L_REPO}/${r_repository}/unpack
-bar
 foldit echo -n "Unziping"
 if [ X"$DEBUG" == X"" ];then
 	if unzip -o -qq ${DOWNLOADEDFILE} -d ${L_REPO}/${r_repository}/unpack; then
@@ -474,7 +473,7 @@ else
 	fi
 fi
 
-# Move all files, even ditfiles 
+# Move all files, even dotfiles 
 mv ${L_REPO}/${r_repository}/unpack/${r_repository}-${VERSION}/* ${L_REPO}/${r_repository}/unpack/${r_repository}-${VERSION}/.[^.]*  ${L_REPO}/${r_repository}
 
 # Test if there was a change in get_env.sh - and is needed to be run again.
@@ -515,8 +514,6 @@ create_dir $HOME/sshfs
 create_dir $L_REPO/local 
 
 
-# TODO: Fix where files will be copyied from
-exit 0
 # Call copy_files() for all values in array $FILES2COPY
 for array in "${FILES2COPY[@]}";do
 	copy_files $array
