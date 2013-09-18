@@ -456,18 +456,17 @@ fi
 
 # Unzip
 create_dir ${L_REPO}/${r_repository}/unpack
-unzip ${DOWNLOADEDFILE} -d ${L_REPO}/${r_repository}/unpack
 bar
 foldit echo -n "Unziping"
 if [ X"$DEBUG" == X"" ];then
-	if unzip -qq ${DOWNLOADEDFILE} -d ${L_REPO}/${r_repository}/unpack; then
+	if unzip -o -qq ${DOWNLOADEDFILE} -d ${L_REPO}/${r_repository}/unpack; then
 		ok
 		dbg "Unziped file"
 	else
 		failed "Failed to unzip"
 	fi
 else
-	if unzip ${DOWNLOADEDFILE} -d ${L_REPO}/${r_repository}/unpack; then
+	if unzip -o ${DOWNLOADEDFILE} -d ${L_REPO}/${r_repository}/unpack; then
 		ok
 		dbg "Unziped file"
 	else
