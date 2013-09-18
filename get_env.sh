@@ -8,12 +8,6 @@
 # Exit on error
 # set -e
 
-# TODO:		Major changes
-#   Move to git and github
-#
-#	Start using some kind of signing and verifying code. pgp? md5hash on www-site?
-#	 
-
 # This functions starts the script so all functions don't need to be sourced before exiting.
 depends() {
 	for app in $@;do
