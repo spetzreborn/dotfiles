@@ -460,7 +460,7 @@ unzip ${DOWNLOADEDFILE} -d ${L_REPO}/${r_repository}/unpack
 bar
 foldit echo -n "Unziping"
 if [ X"$DEBUG" == X"" ];then
-	if unzip ${DOWNLOADEDFILE} -d ${L_REPO}/${r_repository}/unpack -qq; then
+	if unzip -qq ${DOWNLOADEDFILE} -d ${L_REPO}/${r_repository}/unpack; then
 		ok
 		dbg "Unziped file"
 	else
