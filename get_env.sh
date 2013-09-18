@@ -436,23 +436,23 @@ DOWNLOADEDFILE="${DOWNLOADDIR}/${r_repository}_${VERSION}.zip"
 create_dir ${DOWNLOADDIR}/unpack/
 # Download zip from github
 echo ""
-	bar
-	foldit echo -n "Downloading remote repository as zipfile."
-	if [ X"$DEBUG" == X"" ];then
-		if wget https://${gitserver}/${gituser}/${r_repository}/archive/${VERSION}.zip -O ${DOWNLOADEDFILE} -q; then
-			ok
-			dbg "Downloaded ${DOWNLOADEDFILE}"
-		else
-			failed "Clould not download zipfile"
-		fi
+bar
+foldit echo -n "Downloading remote repository as zipfile."
+if [ X"$DEBUG" == X"" ];then
+	if wget https://${gitserver}/${gituser}/${r_repository}/archive/${VERSION}.zip -O ${DOWNLOADEDFILE} -q; then
+		ok
+		dbg "Downloaded ${DOWNLOADEDFILE}"
 	else
-		if wget https://${gitserver}/${gituser}/${r_repository}/archive/${VERSION}.zip -O ${DOWNLOADEDFILE}; then
-			ok
-			dbg "Downloaded ${DOWNLOADEDFILE}"
-		else
-			failed "Clould not download zipfile"
-		fi
+		failed "Clould not download zipfile"
 	fi
+else
+	if wget https://${gitserver}/${gituser}/${r_repository}/archive/${VERSION}.zip -O ${DOWNLOADEDFILE}; then
+		ok
+		dbg "Downloaded ${DOWNLOADEDFILE}"
+	else
+		failed "Clould not download zipfile"
+	fi
+fi
 
 # Unzip
 create_dir ${L_REPO}/${r_repository}/unpack
