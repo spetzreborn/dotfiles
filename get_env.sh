@@ -458,9 +458,8 @@ echo ""
 create_dir ${L_REPO}/${r_repository}/unpack
 unzip ${DOWNLOADEDFILE} -d ${L_REPO}/${r_repository}/unpack
 
-# TODO: Better smarter move?
-# Move files to unpack/
-mv ${L_REPO}/${r_repository}/unpack/${r_repository}-${VERSION}/* ${L_REPO}/${r_repository}
+# Move all files, even ditfiles 
+mv ${L_REPO}/${r_repository}/unpack/${r_repository}-${VERSION}/* ${L_REPO}/${r_repository}/unpack/${r_repository}-${VERSION}/.[^.]*  ${L_REPO}/${r_repository}
 
 # Test if there was a change in get_env.sh - and is needed to be run again.
 # Need absolute name in from file, so it truly can make variable name.
