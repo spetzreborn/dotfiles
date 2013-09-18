@@ -460,7 +460,7 @@ unzip ${DOWNLOADEDFILE} -d ${DOWNLOADDIR}/unpack/
 # TODO: Better smarter move?
 # Move files to unpack/
 create_dir ${L_REPO}/unpacked/
-mv ${DOWNLOADEDDIR}/unpack/${r_repository}-${VERSION}/* ${L_REPO}/unpacked
+mv ${DOWNLOADDIR}/unpack/${r_repository}-${VERSION}/* ${L_REPO}/unpacked
 
 # Test if there was a change in get_env.sh - and is needed to be run again.
 # Need absolute name in from file, so it truly can make variable name.
