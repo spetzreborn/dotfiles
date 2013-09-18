@@ -446,7 +446,7 @@ echo ""
 			failed "Clould not download zipfile"
 		fi
 	else
-		if wget https://${gitserver}/${gituser}/${r_repository}/archive/${VERSION}.zip -O ${DOWNLOADEDFILE}.zip; then
+		if wget https://${gitserver}/${gituser}/${r_repository}/archive/${VERSION}.zip -O ${DOWNLOADEDFILE}; then
 			ok
 			dbg "Downloaded ${DOWNLOADEDFILE}"
 		else
@@ -455,12 +455,12 @@ echo ""
 	fi
 
 # Unzip
-unzip ${DOWNLOADEDFILE} -d ${DOWNLOADDIR}/unpack/
+create_dir ${L_REPO}/${r_repository}/unpack
+unzip ${DOWNLOADEDFILE} -d ${L_REPO}/${r_repository}/unpack
 
 # TODO: Better smarter move?
 # Move files to unpack/
-create_dir ${L_REPO}/${r_repository}
-mv ${DOWNLOADDIR}/unpack/${r_repository}-${VERSION}/* ${L_REPO}/${r_repository}
+mv ${L_REPO}/${r_repository}/unpack/${r_repository}-${VERSION}/* ${L_REPO}/${r_repository}
 
 # Test if there was a change in get_env.sh - and is needed to be run again.
 # Need absolute name in from file, so it truly can make variable name.
@@ -567,8 +567,9 @@ fi
 report
 
 # Cleanup
-# TOOD: remove downloaded zipfile
-
+# Remove downloaded zipfile
+rm ${DOWNLOADEDFILE}
+rm -rf ${DOWNLOADDIR}
 dbg "cat $FAILEDFILE: " $(cat $FAILEDFILE)
 
 if [ -f $FAILEDFILE ];then
