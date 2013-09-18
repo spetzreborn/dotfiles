@@ -45,19 +45,19 @@ FILES2COPY[0]="etc $HOME .testrc"
 # Files to be copied to various dirs. Work like:
 # [dir_the_file_lives_in_in_repo] [dir_the_file_shuld_go_to] [files]
 
-# Files to be copied from [L_REPO/get_env/$VERSION/etc] to [homedir]
+# Files to be copied from [$L_REPO/${r_repository}/$VERSION/etc] to [homedir]
 #FILES2COPY[0]="etc $HOME .bashrc .bash_logout .profile .xprofile .vimrc .screenrc .bashrc.functions .bashrc.alias .inputrc .pentadactylrc .gitconfig"
 
-# Files to be copied from [L_REPO/get_env/$VERSION/work] to [homedir]
+# Files to be copied from [$L_REPO/${r_repository}/$VERSION/work] to [homedir]
 #FILES2COPY[1]="work $HOME connect_rdp.sh"
 
-# Files to be copied from [L_REPO/get_env/$VERSION/scripts] to [homedir]
+# Files to be copied from [$L_REPO/${r_repository}/$VERSION/scripts] to [homedir]
 #FILES2COPY[2]="scripts $HOME .screen_ssh.sh radio.sh"
 
-# Files to be copied from [L_REPO/get_env/$VERSION/etc] to [$HOME/.ssh]
+# Files to be copied from [$L_REPO/${r_repository}/$VERSION/etc] to [$HOME/.ssh]
 #FILES2COPY[3]="etc $HOME/.ssh config known_hosts_fromrepo"
 
-# Files to be copied from [L_REPO/get_env/$VERSION/etc/.vim/plugin] to [$HOME/.vim/plugin]
+# Files to be copied from [$L_REPO/${r_repository}/$VERSION/etc/.vim/plugin] to [$HOME/.vim/plugin]
 #FILES2COPY[4]="etc/.vim/plugin $HOME/.vim/plugin detectindent.vim SearchComplete.vim gnupg.vim"
 
 # Files to be copied to some other dir
@@ -215,7 +215,7 @@ copy_files() {
 # If the destfile exist ...
 		if [ -f ${to_dir}/${file} ]; then 
 # .. diff it with the source file .. This magic diff ignore the two svn meta information lines, or comments. Both .vimrc and bash comments.
-			if ! diff -q -I '^# .*' -I '^" .*' $L_REPO/get_env/$from_dir/$file ${to_dir}/$file >/dev/null 2>&1; then
+			if ! diff -q -I '^# .*' -I '^" .*' $L_REPO/${r_repository}/$from_dir/$file ${to_dir}/$file >/dev/null 2>&1; then
 # .. And if it is not the same, copy to backup file:
 				foldit echo -n "Found difference in ${to_dir}/${file}, making backup"
 				if [ $(echo $file | cut -c1) == "." ];then
@@ -235,7 +235,7 @@ copy_files() {
 				fi
 # .. Copy the new file
 				foldit echo -n "Copy new ${to_dir}/$file"
-				if cp $L_REPO/get_env/$from_dir/$file ${to_dir}/$file; then
+				if cp $L_REPO/${r_repository}/$from_dir/$file ${to_dir}/$file; then
 					ok
 					dbg "Updated file: ${to_dir}/$file copied ok"
 					UPDATED_FILES="${UPDATED_FILES}$file "
@@ -248,7 +248,7 @@ copy_files() {
 # If the to_file dose not exist, just copy it.
 		else
 			foldit echo -n "Copy new ${to_dir}/$file"
-			if cp $L_REPO/get_env/$from_dir/$file ${to_dir}/$file >/dev/null 2>&1; then
+			if cp $L_REPO/${r_repository}/$from_dir/$file ${to_dir}/$file >/dev/null 2>&1; then
 				ok
 				dbg "New file: ${to_dir}/$file copied ok"
 				NEW_FILES="${NEW_FILES}$file "
@@ -430,42 +430,46 @@ foldit echo ""
 foldit echo "Using $L_REPO as repo."
 foldit echo "Using version: $VERSION "
 
+# Create download and unpack dir
+DOWNLOADDIR=$(mktemp -d /tmp/${MYBASENAME}.XXXXXX)
+DOWNLOADEDFILE="${DOWNLOADDIR}/${r_repository}_${VERSION}.zip"
+create_dir ${DOWNLOADDIR}/unpack/
 # Download zip from github
 echo ""
 	bar
 	foldit echo -n "Downloading remote repository as zipfile."
 	if [ X"$DEBUG" == X"" ];then
-		if wget https://${gitserver}/${gituser}/${r_repository}/archive/${VERSION}.zip -O /tmp/${r_repository}_${VERSION}.zip -q; then
+		if wget https://${gitserver}/${gituser}/${r_repository}/archive/${VERSION}.zip -O ${DOWNLOADEDFILE} -q; then
 			ok
-			dbg "Downloaded ${r_repository}/archive/${VERSION}.zip}"
+			dbg "Downloaded ${DOWNLOADEDFILE}"
 		else
 			failed "Clould not download zipfile"
 		fi
 	else
-		if wget https://${gitserver}/${gituser}/${r_repository}/archive/${VERSION}.zip -O /tmp/${r_repository}_${VERSION}.zip; then
+		if wget https://${gitserver}/${gituser}/${r_repository}/archive/${VERSION}.zip -O ${DOWNLOADEDFILE}.zip; then
 			ok
-			dbg "Downloaded ${r_repository}/archive/${VERSION}.zip}"
+			dbg "Downloaded ${DOWNLOADEDFILE}"
 		else
 			failed "Clould not download zipfile"
 		fi
 	fi
 
 # Unzip
-create_dir ${L_REPO}/get_env/unpack/
-unzip /tmp/${r_repository}_${VERSION}.zip -d ${L_REPO}/unpack/
+unzip ${DOWNLOADEDFILE} -d ${DOWNLOADDIR}/unpack/
 
 # TODO: Better smarter move?
-# Move files from unpack/
-mv ${L_REPO}/unpack/${r_repository}-${VERSION}/* ${L_REPO}/
+# Move files to unpack/
+create_dir ${L_REPO}/unpacked/
+mv ${DOWNLOADEDDIR}/unpack/${r_repository}-${VERSION}/* ${L_REPO}/unpacked
 
 # Test if there was a change in get_env.sh - and is needed to be run again.
 # Need absolute name in from file, so it truly can make variable name.
 # This diff dose not care about svn metadatalines or comments.
-if ! diff -q -I '^# .*'  ~/$MYNAME ${L_REPO}/get_env/unpack/${myabsolutename} >/dev/null 2>&1; then
+if ! diff -q -I '^# .*'  ~/$MYNAME ${L_REPO}/${r_repository}/${myabsolutename} >/dev/null 2>&1; then
 	echo -e "" 
 	foldit echo -e '${INFO}Found newer	 $MYNAME ${END}'
 	foldit echo -en "Replacing	   $(echo ~)/${MYNAME}"
-	if cp ${L_REPO}/get_env/unpack/${myabsolutename} ~/${MYNAME}; then
+	if cp ${L_REPO}/${r_repository}/${myabsolutename} ~/${MYNAME}; then
 		ok
 		dbg "Replaced ${MYNAME} with newer succesfully."
 	else
@@ -490,16 +494,11 @@ if ! diff -q -I '^# .*'  ~/$MYNAME ${L_REPO}/get_env/unpack/${myabsolutename} >/
 	fi
 fi
 
-# TODO: Move files from unpack to where they should be.
-
-
 # Creates dirs
 create_dir $HOME/sshfs
 # Makes a directory for local files in $L_REPO/local
 create_dir $L_REPO/local 
 
-
-# TODO: Make smart symlink like ~/bin -> ~/$L_REPO/get_env/$VERSION/etc or ~/$L_REPO/get_env/$VERSION/work
 
 # TODO: Fix where files will be copyied from
 exit 0
