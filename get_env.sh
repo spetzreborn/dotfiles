@@ -473,8 +473,8 @@ else
 	fi
 fi
 
-# Move all files, even dotfiles 
-mv ${L_REPO}/${r_repository}/unpack/${r_repository}-${VERSION}/* ${L_REPO}/${r_repository}/unpack/${r_repository}-${VERSION}/.[^.]*  ${L_REPO}/${r_repository}
+# Copy all files from unpack
+rsync -a ${L_REPO}/${r_repository}/unpack/${r_repository}-${VERSION}/ ${L_REPO}/${r_repository}
 
 # Test if there was a change in get_env.sh - and is needed to be run again.
 # Need absolute name in from file, so it truly can make variable name.
