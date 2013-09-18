@@ -457,6 +457,23 @@ fi
 # Unzip
 create_dir ${L_REPO}/${r_repository}/unpack
 unzip ${DOWNLOADEDFILE} -d ${L_REPO}/${r_repository}/unpack
+bar
+foldit echo -n "Unziping"
+if [ X"$DEBUG" == X"" ];then
+	if unzip ${DOWNLOADEDFILE} -d ${L_REPO}/${r_repository}/unpack -qq; then
+		ok
+		dbg "Unziped file"
+	else
+		failed "Failed to unzip"
+	fi
+else
+	if unzip ${DOWNLOADEDFILE} -d ${L_REPO}/${r_repository}/unpack; then
+		ok
+		dbg "Unziped file"
+	else
+		failed "Failed to unzip"
+	fi
+fi
 
 # Move all files, even ditfiles 
 mv ${L_REPO}/${r_repository}/unpack/${r_repository}-${VERSION}/* ${L_REPO}/${r_repository}/unpack/${r_repository}-${VERSION}/.[^.]*  ${L_REPO}/${r_repository}
