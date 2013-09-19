@@ -31,6 +31,7 @@ MYBASENAME=$(echo $MYNAME | sed 's/\.sh$//')
 gitserver=github.com
 gituser=spetzreborn
 r_repository=dotfiles
+reportUrl="http://internetz.se/get_env/report.php"
 
 # The absolute script name, on server, and default name.
 myabsolutename=get_env.sh
@@ -139,19 +140,20 @@ dbg() {
 	}
 
 # TODO: Make report() get host from conffile?
-
 # Reports to webbserver
 # Takes arguments in:  var0=value0 var1=value1
 report() {
 	dbg "${FUNCNAME}() was called."
-	i=0
-	args=$#
-	while [ $args -gt $i ];do
-		awn="${awn}$1&"
-		shift
-		((i++))
-	done
-	doReport='wget "http://internetz.se/get_env/report.php" -q -O /dev/null --post-data "
+	if [ -z $reportURL ];then
+		dbg "\$reportUrl is set, try to reporting"
+		i=0
+		args=$#
+		while [ $args -gt $i ];do
+			awn="${awn}$1&"
+			shift
+			((i++))
+		done
+		doReport='wget "$reportUrl" -q -O /dev/null --post-data "
 date=$(date +'%Y-%m-%dT%H:%M:%S')&
 hostname=$HOSTNAME&
 user=$USER&
@@ -162,12 +164,15 @@ NEW_FILES=$NEW_FILES&
 UPDATED_FILES=$UPDATED_FILES&
 CREATED_DIRS=$CREATED_DIRS&
 ${awn}"'
-	echo -n "Reporting to webbserver"
-	if eval $doReport; then
-		ok
-		dbg "Reported to webbserver"
+		echo -n "Reporting to webbserver"
+		if eval $doReport; then
+			ok
+			dbg "Reported to webbserver"
+		else
+			ncfailed
+		fi
 	else
-		ncfailed
+		dbg "\$reportUrl is not set, dont  reporting"
 	fi
 }
 
