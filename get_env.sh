@@ -46,7 +46,7 @@ FILES2COPY[0]="HOME $HOME .testrc"
 # [dir_the_file_lives_in_in_repo] [dir_the_file_shuld_go_to] [files]
 
 # Files to be copied from [$L_REPO/${r_repository}/$VERSION/etc] to [homedir]
-#FILES2COPY[0]="etc $HOME .bashrc .bash_logout .profile .xprofile .vimrc .screenrc .bashrc.functions .bashrc.alias .inputrc .pentadactylrc .gitconfig"
+# FILES2COPY[0]="HOME $HOME .bashrc .bash_logout .profile .xprofile .vimrc .screenrc .bashrc.functions .bashrc.alias .inputrc .pentadactylrc .gitconfig"
 
 # Files to be copied from [$L_REPO/${r_repository}/$VERSION/work] to [homedir]
 #FILES2COPY[1]="work $HOME connect_rdp.sh"
