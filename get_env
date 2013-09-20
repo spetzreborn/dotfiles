@@ -25,7 +25,6 @@ depends wget logger tput cp rm cat ln unlink diff host mkdir grep egrep sed fold
 
 # The script name
 MYNAME=$(basename $0)
-MYBASENAME=$(echo $MYNAME | sed 's/\.sh$//')
 
 # Repository configuration
 gitserver=github.com
@@ -34,10 +33,10 @@ r_repository=dotfiles
 reportUrl="http://internetz.se/get_env/report.php"
 
 # The absolute script name, on server, and default name.
-myabsolutename=get_env.sh
+myabsolutename=get_env
 
 # Conffile
-CONFFILE=~/${MYBASENAME}.conf
+CONFFILE=~/${MYNAME}.conf
 
 # TODO TODO; uncomment arrays when .testrc is working.
 FILES2COPY[0]="HOME $HOME .testrc"
@@ -195,8 +194,8 @@ cat <<EOF
 "Useage: ./$0 arguments"
 	options:
 	-h	 This helptext
-	-r repo  Dir to create and download repo to, default same name as my filename ($MYBASENAME)
-	-d	 Debug - shows whats happening and saves debuglog in the form /tmp/$MYBASENAME.debuglog.2011-10-21T10:42:37.XXXXXXXXX
+	-r repo  Dir to create and download repo to, default same name as my filename ($MYNAME)
+	-d	 Debug - shows whats happening and saves debuglog in the form /tmp/$MYNAME-10-21T10:42:37.XXXXXXXXX
 	-l	If debug is used, use this file as debuglog.
 
 EOF
@@ -349,7 +348,7 @@ done
 # Only create a debuglog if there is not one.
 if [ -n $DEBUG ];then
 	if [ -z $DEBUGLOG ];then
-		DEBUGLOG=$(mktemp /tmp/${MYBASENAME}.debuglog.${ddate}.XXXXXXXXX)
+		DEBUGLOG=$(mktemp /tmp/${MYNAME}.debuglog.${ddate}.XXXXXXXXX)
 	fi
 fi
 
@@ -387,7 +386,7 @@ fi
 
 # If argument -r was not given, set default $L_REPO to absolute path
 if [ X"$L_REPO" == X"" ]; then
-	L_REPO="$(echo ~/${MYBASENAME})"
+	L_REPO="$(echo ~/${MYNAME})"
 	dbg 'Setting defult $L_REPO to absolut path: ' "$L_REPO"
 fi
 
@@ -436,7 +435,7 @@ foldit echo "Using $L_REPO as repo."
 foldit echo "Using version: $VERSION "
 
 # Create download and unpack dir
-DOWNLOADDIR=$(mktemp -d /tmp/${MYBASENAME}.XXXXXX)
+DOWNLOADDIR=$(mktemp -d /tmp/${MYNAME}.XXXXXX)
 DOWNLOADEDFILE="${DOWNLOADDIR}/${r_repository}_${VERSION}.zip"
 create_dir ${DOWNLOADDIR}/unpack/
 # Download zip from github
@@ -481,7 +480,7 @@ fi
 # Copy all files from unpack
 rsync -a ${L_REPO}/${r_repository}/unpack/${r_repository}-${VERSION}/ ${L_REPO}/${r_repository}
 
-# Test if there was a change in get_env.sh - and is needed to be run again.
+# Test if there was a change in get_env - and is needed to be run again.
 # Need absolute name in from file, so it truly can make variable name.
 # This diff dose not care about svn metadatalines or comments.
 if ! diff -q -I '^# .*'  ~/$MYNAME ${L_REPO}/${r_repository}/${myabsolutename} >/dev/null 2>&1; then
