@@ -1,0 +1,1 @@
+files2copy[0]="foo $HOME .testrc.hostspecific"
