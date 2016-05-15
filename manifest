@@ -11,3 +11,7 @@ files2copy[0]="HOME $HOME .testrc"
 # Create directories
 # I like to have an empty directory named 'sshfs' in my homedir for mounting sshfs.
 dirsToCreate="$HOME/sshfs"
+
+# Host that will ignore this manifestfile.
+# Host in ignoreHosts will still try to run host specific configuration.
+ignoreHosts=""
